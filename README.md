@@ -1,0 +1,1 @@
+# qnift_equity
