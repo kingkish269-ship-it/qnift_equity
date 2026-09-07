@@ -1,0 +1,38 @@
+# One-click deploy on Render (free tier). In Render: New → Blueprint → point at
+# this repo. Then fill the env vars below in the dashboard (sync:false = NOT
+# stored in git).
+services:
+  - type: web
+    name: qnift-equity-signal-server
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      # ── Angel One SmartAPI (server logs in on its own via the TOTP secret) ──
+      - key: ANGEL_API_KEY
+        sync: false
+      - key: ANGEL_CLIENT_CODE
+        sync: false
+      - key: ANGEL_MPIN
+        sync: false
+      - key: ANGEL_TOTP_SECRET      # BASE32 secret from enable-totp (NOT a 6-digit code)
+        sync: false
+      # ── Telegram ──
+      - key: TELEGRAM_BOT_TOKEN
+        sync: false
+      - key: TELEGRAM_CHAT_ID
+        sync: false
+      # ── Optional overrides (defaults are sensible) ──
+      - key: INDEX_UNIVERSE         # NIFTY50 / NIFTY100 / NIFTY200 / NIFTY500
+        value: "NIFTY100"
+      - key: SCAN_MODE              # eod (once ~15:20 IST) | intraday
+        value: "eod"
+      - key: SCAN_INTERVAL          # ONE_DAY | FIFTEEN_MINUTE | FIVE_MINUTE
+        value: "ONE_DAY"
+      - key: SCAN_EVERY_MIN         # intraday: minutes between scans
+        value: "15"
+      - key: EOD_SCAN_HHMM          # eod: IST time (HHMM) to run the daily scan
+        value: "1520"
+      - key: MAX_ALERTS_PER_SCAN
+        value: "5"

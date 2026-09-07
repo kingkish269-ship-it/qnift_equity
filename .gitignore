@@ -1,0 +1,9 @@
+node_modules/
+dist/
+*.log
+
+# Secrets — NEVER commit real credentials
+.env
+
+# Runtime state (dedupe cache)
+state*.json
