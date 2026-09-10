@@ -43,16 +43,19 @@ export const DEFAULT_SIGNAL_CONFIG: SignalConfig = {
   emaTrend: 200,
   atrPeriod: 14,
   rsiPeriod: 14,
-  rsiMin: 55,
-  rsiMax: 78,
+  // Loosened "somewhat" (was 55/78, 1%, 1.5x, 6%) after a 1-year Nifty-100 check:
+  // ~+56% more setups (32 -> 50/yr on a 29-name sample) while keeping the trend +
+  // R:R quality core. All five are env-tunable (see index.ts) to dial further.
+  rsiMin: 52,
+  rsiMax: 80,
   breakoutLookback: 20,
-  breakoutTolerance: 0.01,
-  volSpikeMult: 1.5,
+  breakoutTolerance: 0.02, // within 2% of the 20-day high (was 1%)
+  volSpikeMult: 1.3, // >= 1.3x avg volume (was 1.5x)
   liquidityLookback: 20,
   atrStopMult: 1.5,
   atrTargetMult: 3.0,
   minRiskReward: 1.8,
-  maxStopPct: 0.06,
+  maxStopPct: 0.07, // allow slightly wider (more volatile) names (was 6%)
 };
 
 export interface Signal {

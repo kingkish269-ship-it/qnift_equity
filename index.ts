@@ -60,7 +60,17 @@ const QUALITY: QualityConfig = {
   minAvgTurnoverCr: Number(process.env.MIN_AVG_TURNOVER_CR) || 10,
   liquidityLookback: DEFAULT_SIGNAL_CONFIG.liquidityLookback,
 };
-const SIGNAL_CFG: SignalConfig = { ...DEFAULT_SIGNAL_CONFIG };
+// Signal-screen knobs, env-tunable (defaults are the "somewhat looser" values in
+// signals.ts). Raise VOL_SPIKE_MULT / narrow RSI to tighten; lower to loosen.
+const numEnv = (v: string | undefined, d: number) => (v != null && Number(v) > 0 ? Number(v) : d);
+const SIGNAL_CFG: SignalConfig = {
+  ...DEFAULT_SIGNAL_CONFIG,
+  volSpikeMult: numEnv(process.env.VOL_SPIKE_MULT, DEFAULT_SIGNAL_CONFIG.volSpikeMult),
+  rsiMin: numEnv(process.env.RSI_MIN, DEFAULT_SIGNAL_CONFIG.rsiMin),
+  rsiMax: numEnv(process.env.RSI_MAX, DEFAULT_SIGNAL_CONFIG.rsiMax),
+  breakoutTolerance: numEnv(process.env.BREAKOUT_TOL, DEFAULT_SIGNAL_CONFIG.breakoutTolerance),
+  maxStopPct: numEnv(process.env.MAX_STOP_PCT, DEFAULT_SIGNAL_CONFIG.maxStopPct),
+};
 
 const angel = new AngelClient({
   apiKey: process.env.ANGEL_API_KEY || "",

@@ -49,13 +49,17 @@ Long-only momentum breakout (`src/signals.ts`):
 | Component | Rule (default) |
 |-----------|----------------|
 | Trend     | close > EMA20 > EMA50 (and > EMA200 when available) |
-| Trigger   | close breaks / is within 1% of the 20-day high |
-| Volume    | today's volume ≥ 1.5× the 20-day average |
-| Momentum  | RSI(14) between 55 and 78 |
+| Trigger   | close breaks / is within 2% of the 20-day high |
+| Volume    | today's volume ≥ 1.3× the 20-day average |
+| Momentum  | RSI(14) between 52 and 80 |
 
 Trade construction is **ATR-based**: stop = entry − 1.5×ATR, target = entry +
 3.0×ATR (reward:risk ≈ 2:1). A setup is emitted only if R:R ≥ 1.8 and the stop
-is ≤ 6%.
+is ≤ 7%.
+
+These thresholds are a *somewhat loosened* default (a 1-year Nifty-100 check put
+this ~56% above the older 1.5×/55–78/1%/6% screen). Tune per taste via env:
+`VOL_SPIKE_MULT`, `RSI_MIN`, `RSI_MAX`, `BREAKOUT_TOL`, `MAX_STOP_PCT`.
 
 ---
 
